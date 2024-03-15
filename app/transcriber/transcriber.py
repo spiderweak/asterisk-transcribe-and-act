@@ -7,6 +7,7 @@ which manages audio blobs, merges them, and transcribes the merged audio using t
 
 import whisper
 import logging
+import os
 
 from typing import Optional
 
@@ -30,7 +31,7 @@ class AudioTranscriptionManager:
         ffmpeg_installed (bool): ffmpeg_installation_status
     """
 
-    def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: Optional[str] = None):
+    def __init__(self, in_file_path: str, out_file_path: str, unique_identifier: Optional[str] = None, transcription_folder_name: Optional[str] = None):
         """Initializes the AudioTranscriptionManager with an optional temporary folder and session ID.
 
         If no temporary folder is provided, a new one is created. The temporary folder is used for storing audio files.
@@ -39,6 +40,14 @@ class AudioTranscriptionManager:
         Args:
             temp_folder (Optional[tempfile.TemporaryDirectory]): The temporary folder for storing audio files.
         """
+
+        if unique_identifier is None:
+            if ('-'.join(os.path.basename(in_file_path).split('-')[:-1])) == ('-'.join(os.path.basename(out_file_path).split('-')[:-1])):
+                self.unique_identifier = '-'.join(os.path.basename(in_file_path).split('-')[:-1])
+            else:
+                raise ValueError("Please use a custime unique identifier if you cross-transcribe two different files")
+        else:
+            self.unique_identifier = unique_identifier
 
         self.in_file = in_file_path # Check if path exists
         self.out_file = out_file_path # Check if path exists

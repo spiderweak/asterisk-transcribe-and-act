@@ -4,20 +4,20 @@ Installs the application on the system or in the docker container
 """
 
 
-from app.transcriber.watcher import Watcher
-from app.utils import Config
-
+import asyncio
 import time
 import logging
 import argparse
 from dotenv import load_dotenv
 
 
+from .app.transcriber.watcher import Watcher
+from .app.utils import Config
+
+
 def load_environment_variables():
     """Load environment variables from the .env file."""
-
     load_dotenv()
-
     logging.debug("Environment variables loaded")
 
 
@@ -32,8 +32,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def main():
-    """Run the Flask application with Socket.IO support."""
+async def main_async():
 
     options = parse_arguments()
     config = Config(options = options)
@@ -41,12 +40,15 @@ def main():
     #watch_directory = "/path/to/your/asterisk/monitor/folder"
 
     watcher = Watcher(config.parsed_yaml["watch_directory"])
-
-
     logging.debug(f"Starting to monitor {config.parsed_yaml['watch_directory']} for new and updated files...")
 
     # Start the watcher
-    watcher.run()
+    await watcher.run()
+
+
+def main():
+    """Entry point for running the asynchronous main function."""
+    asyncio.run(main_async())
 
 if __name__ == '__main__':
     main()
