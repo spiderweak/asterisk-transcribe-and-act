@@ -1,0 +1,4 @@
+openai-whisper
+python-dotenv
+watchdog
+pyyaml

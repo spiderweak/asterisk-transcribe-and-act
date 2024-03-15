@@ -1,0 +1,3 @@
+loglevel : debug
+logfile : log.txt
+watch_directory: /home/spiderweak/Git/BU/bernard/pro/asterisk-transcribe-and-act/test_audio
