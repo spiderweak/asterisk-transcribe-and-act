@@ -7,10 +7,11 @@ which manages audio blobs, merges them, and transcribes the merged audio using t
 
 import whisper
 import logging
+import os
 
 from typing import Optional
 
-from ..utils import check_ffmpeg_installed, MissingPackageError
+from ..utils import check_ffmpeg_installed, get_wav_duration, cut_beginning, MissingPackageError
 
 # Load Whisper model globally.
 audio_model = whisper.load_model("base")
@@ -30,7 +31,7 @@ class AudioTranscriptionManager:
         ffmpeg_installed (bool): ffmpeg_installation_status
     """
 
-    def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: Optional[str] = None):
+    def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str):
         """Initializes the AudioTranscriptionManager with an optional temporary folder and session ID.
 
         If no temporary folder is provided, a new one is created. The temporary folder is used for storing audio files.
@@ -45,8 +46,14 @@ class AudioTranscriptionManager:
 
         self.transcription_folder_name = transcription_folder_name
 
-        self.in_transcription = ""
-        self.out_transcription = ""
+        self.temp_in_file = os.path.join(self.transcription_folder_name, os.path.basename(self.in_file))
+        self.temp_out_file = os.path.join(self.transcription_folder_name, os.path.basename(self.out_file))
+
+        self.in_transcription = dict()
+        self.out_transcription = dict()
+
+        self.in_timer = 0.0
+        self.out_timer = 0.0
 
         self.model : whisper.Whisper = audio_model
 
@@ -58,18 +65,32 @@ class AudioTranscriptionManager:
         Raises:
             Exception: Propagates any exceptions that occur during transcription.
         """
-        try:
-            in_result = self.model.transcribe(self.in_file, word_timestamps=True)
-            out_result = self.model.transcribe(self.out_file, word_timestamps=True)
 
+        logging.info(f"Copying file to folder and removing times")
+        cut_beginning(self.in_file, self.temp_in_file, self.in_timer)
+        cut_beginning(self.out_file, self.temp_out_file, self.out_timer)
+
+        try:
+            print(f"Inbound file length is : {get_wav_duration(self.temp_in_file)}")
+            in_result = self.model.transcribe(self.temp_in_file, word_timestamps=True)
             self.in_transcription = in_result
-            self.out_transcription = out_result#['text'])
-            logging.debug("Transcription completed successfully.")
-            return (self.in_transcription, self.out_transcription)
         except Exception as e:
-            logging.error(f"Error during transcription: {e}")
+            logging.error(f"Error during inbound transcription: {e}")
             raise
 
+        try:
+            print(f"Outbound file length is : {get_wav_duration(self.temp_out_file)}")
+            out_result = self.model.transcribe(self.temp_out_file, word_timestamps=True)
+            self.out_transcription = out_result#['text'])
+        except Exception as e:
+            logging.error(f"Error during inbound transcription: {e}")
+            raise
+
+        logging.debug("Transcription completed successfully.")
+
+        logging.debug("Updating times values")
+
+        return (self.in_transcription, self.out_transcription)
 
 
 DEFAULT_TIMEOUT = 8 # in seconds
