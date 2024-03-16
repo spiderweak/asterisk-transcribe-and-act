@@ -3,14 +3,16 @@
 Installs the application on the system or in the docker container
 """
 
-
-from app.transcriber.watcher import Watcher
-from app.utils import Config
-
 import time
 import logging
 import argparse
+
+from threading import Thread
 from dotenv import load_dotenv
+
+from app.transcriber.watcher import Watcher
+from app.transcriber.queuehandler import EventQueue
+from app.utils import Config
 
 
 def load_environment_variables():
@@ -38,17 +40,20 @@ def main():
     options = parse_arguments()
     config = Config(options = options)
 
+    processing_queue = EventQueue()
+
     #watch_directory = "/path/to/your/asterisk/monitor/folder"
+    watcher = Watcher(config.parsed_yaml["watch_directory"], processing_queue)
 
-    watcher = Watcher(config.parsed_yaml["watch_directory"])
-
+    # Start the file watcher in a separate thread
 
     logging.debug(f"Starting to monitor {config.parsed_yaml['watch_directory']} for new and updated files...")
 
-    # Start the watcher
-    watcher.run()
+    watcher_thread = Thread(target=watcher.run, daemon=True)
+    watcher_thread.start()
+
+    while True:
+        time.sleep(1)
 
 if __name__ == '__main__':
     main()
-
-
