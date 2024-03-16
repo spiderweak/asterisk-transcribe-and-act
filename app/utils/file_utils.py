@@ -18,6 +18,16 @@ def generate_folder(unique_identifier: str) -> str:
 
     return conversation_temp_dir
 
+def get_pair_path(file_path: str):
+        """
+        Given one file of a pair, returns the expected path of its pair.
+        Assumes file naming convention of '...-in.wav' and '...-out.wav'.
+        """
+        if "-in.wav" in file_path:
+            return file_path.replace("-in.wav", "-out.wav")
+        elif "-out.wav" in file_path:
+            return file_path.replace("-out.wav", "-in.wav")
+        return None
 
 def purge_file(file: str):
     """Attempts to delete the specified file.
