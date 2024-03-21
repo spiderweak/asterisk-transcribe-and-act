@@ -7,17 +7,19 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 
 from .transcriber import AudioTranscriptionManager
+from .conversation import ConversationTranscriptionManager
 from ..utils import  generate_folder, get_pair_path
 
 
 class Watcher:
-    def __init__(self, watch_directory, processing_queue):
+    def __init__(self, watch_directory, processing_queue, file_type):
         self.watch_directory = watch_directory
         self.processing_queue = processing_queue
+        self.file_type = file_type
         self.observer = Observer()
 
     def run(self):
-        event_handler = EventHandler(self.processing_queue)
+        event_handler = EventHandler(self.processing_queue, self.file_type)
         self.observer.schedule(event_handler, self.watch_directory, recursive=True)
         self.observer.start()
         try:
@@ -29,12 +31,13 @@ class Watcher:
 
 
 class EventHandler(FileSystemEventHandler):
-    def __init__(self, processing_queue):
-        self.atm_data = dict()
+    def __init__(self, processing_queue, file_type):
+        self.data = dict()
         self.processing_queue = processing_queue
+        self.file_type = file_type
 
     def on_created(self, event):
-        if event.is_directory or not event.src_path.endswith('.wav'):
+        if event.is_directory or not event.src_path.endswith(f'.{self.file_type}'):
             return
 
         logging.debug(f"Received created event - {event.src_path}.")
@@ -45,7 +48,7 @@ class EventHandler(FileSystemEventHandler):
             self.process_files(file_path, pair_path)
 
     def on_modified(self, event):
-        if event.is_directory or not event.src_path.endswith('.wav'):
+        if event.is_directory or not event.src_path.endswith(f'.{self.file_type}'):
             return
 
         logging.debug(f"Received modified event - {event.src_path}.")
@@ -75,10 +78,15 @@ class EventHandler(FileSystemEventHandler):
         folder_name = generate_folder(unique_identifier)
         logging.debug(f"Temporary folder for conversation: {folder_name}")
 
-        # Initialize or retrieve the AudioTranscriptionManager for this conversation
-        if unique_identifier not in self.atm_data:
-            self.atm_data[unique_identifier] = AudioTranscriptionManager(in_path, out_path, folder_name)
-
-        transcription_manager = self.atm_data[unique_identifier]
-
-        return transcription_manager
+        if {self.file_type} == "wav":
+            # Initialize or retrieve the AudioTranscriptionManager for this conversation
+            if unique_identifier not in self.data:
+                self.data[unique_identifier] = AudioTranscriptionManager(in_path, out_path, folder_name)
+            audio_transcription_manager = self.data[unique_identifier]
+            return audio_transcription_manager
+        if {self.file_type} == "csv":
+            # Initialize or retrieve the AudioTranscriptionManager for this conversation
+            if unique_identifier not in self.data:
+                self.data[unique_identifier] = ConversationTranscriptionManager(in_path, out_path, folder_name)
+            conversation_transcription_manager = self.data[unique_identifier]
+            return conversation_transcription_manager
