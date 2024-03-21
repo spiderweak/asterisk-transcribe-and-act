@@ -21,7 +21,7 @@ class EventQueue(deque):
             item: The item to process.
         """
         # Placeholder processing logic; override this method
-        print(f"Processing item: {item}")
+        logging.debug(f"Processing item: {item}")
 
         logging.debug(f"Running transcription handler")
         item.transcribe()
