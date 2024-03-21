@@ -11,7 +11,7 @@ import os
 
 from typing import Optional
 
-from ..utils import check_ffmpeg_installed, get_wav_duration, cut_beginning, MissingPackageError
+from ..utils import check_ffmpeg_installed, get_wav_duration, cut_beginning, write_to_file, MissingPackageError
 
 # Load Whisper model globally.
 audio_model = whisper.load_model("base")
@@ -88,33 +88,24 @@ class AudioTranscriptionManager:
 
         logging.debug("Transcription completed successfully.")
 
+        try:
+            write_to_file(self.transcription_folder_name, 'transcription-in.csv', self.in_transcription['segments'])
+        except KeyError:
+            logging.error('Inbound Transcription error')
+            print('Inbound Transcription error')
+            pass
+
+        try:
+            write_to_file(self.transcription_folder_name, 'transcription-out.csv', self.out_transcription['segments'])
+        except KeyError:
+            logging.error('Outbound Transcription error')
+            print('Outbound Transcription error')
+            pass
+        
+
         logging.debug("Updating times values")
 
         return (self.in_transcription, self.out_transcription)
 
 
 DEFAULT_TIMEOUT = 8 # in seconds
-
-def process_transcription(transcription_manager: AudioTranscriptionManager, timeout = DEFAULT_TIMEOUT):
-    """Process the transcription of an audio file.
-
-    Args:
-        transcription_manager (AudioTranscriptionManager): The manager handling audio transcriptions.
-        timeout (int): Transcription timeout in seconds.
-
-    Raises:
-        Exception: Propagates exceptions that occur during processing.
-        TimeoutError: If the thread processing the transcription exceeds the allowed time.
-    """
-
-    if not transcription_manager.ffmpeg_installed:
-        logging.warning("ffmpeg package is not installed on the system, the transcription will be unavailable")
-        raise MissingPackageError("ffmpeg not installed on system")
-
-    try:
-        transcription_manager.transcribe()
-        logging.debug(f"In Transcription : {transcription_manager.in_transcription}")
-        logging.debug(f"Out Transcription : {transcription_manager.out_transcription}")
-    except Exception as ex:
-        logging.error(f"Error processing transcription: {ex}")
-        raise
