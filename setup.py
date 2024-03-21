@@ -40,17 +40,22 @@ def main():
     options = parse_arguments()
     config = Config(options = options)
 
-    processing_queue = EventQueue()
+    audio_processing_queue = EventQueue()
+    conversation_processing_queue = EventQueue()
 
     #watch_directory = "/path/to/your/asterisk/monitor/folder"
-    watcher = Watcher(config.parsed_yaml["watch_directory"], processing_queue)
+    audio_watcher = Watcher(config.parsed_yaml["watch_directory"], audio_processing_queue, "wav")
+    text_watcher = Watcher(config.parsed_yaml["watch_directory"], conversation_processing_queue, "csv")
 
     # Start the file watcher in a separate thread
 
     logging.debug(f"Starting to monitor {config.parsed_yaml['watch_directory']} for new and updated files...")
 
-    watcher_thread = Thread(target=watcher.run, daemon=True)
-    watcher_thread.start()
+    audio_watcher_thread = Thread(target=audio_watcher.run, daemon=True)
+    audio_watcher_thread.start()
+
+    text_watcher_thread = Thread(target=text_watcher.run, daemon=True)
+    text_watcher_thread.start()
 
     while True:
         time.sleep(1)
