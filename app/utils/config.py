@@ -70,9 +70,8 @@ class Config:
 
         self.log_filename = self.parsed_yaml.get('logfile', 'log.txt')
 
-        # TODO: Maybe rewrite below
         try:
-            os.makedirs(self.log_filename, exist_ok=True)
+            os.makedirs(os.path.dirname(self.log_filename), exist_ok=True)
         except FileExistsError:
             pass
 
