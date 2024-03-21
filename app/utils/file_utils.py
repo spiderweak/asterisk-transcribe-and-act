@@ -29,6 +29,15 @@ def get_pair_path(file_path: str):
             return file_path.replace("-out.wav", "-in.wav")
         return None
 
+def write_to_file(folder_name, file_name, data):
+    file_path = os.path.join(folder_name, file_name)
+
+    # Open the file and write the data
+    with open(file_path, 'w') as file:
+        for segment in data:
+            line = f"{segment['start']} {segment['end']} {segment['text']}\n"
+            file.write(line)
+
 def purge_file(file: str):
     """Attempts to delete the specified file.
 
