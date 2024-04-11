@@ -72,8 +72,9 @@ class Config:
 
         try:
             os.makedirs(os.path.dirname(self.log_filename), exist_ok=True)
-        except FileExistsError:
+        except FileNotFoundError:
             pass
+
 
         logging.basicConfig(filename=self.log_filename, encoding='utf-8', level=self.log_level)
         logging.info('\n')

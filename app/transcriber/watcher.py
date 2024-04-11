@@ -78,13 +78,13 @@ class EventHandler(FileSystemEventHandler):
         folder_name = generate_folder(unique_identifier)
         logging.debug(f"Temporary folder for conversation: {folder_name}")
 
-        if {self.file_type} == "wav":
+        if self.file_type == "wav":
             # Initialize or retrieve the AudioTranscriptionManager for this conversation
             if unique_identifier not in self.data:
                 self.data[unique_identifier] = AudioTranscriptionManager(in_path, out_path, folder_name)
             audio_transcription_manager = self.data[unique_identifier]
             return audio_transcription_manager
-        if {self.file_type} == "csv":
+        if self.file_type == "csv":
             # Initialize or retrieve the AudioTranscriptionManager for this conversation
             if unique_identifier not in self.data:
                 self.data[unique_identifier] = ConversationTranscriptionManager(in_path, out_path, folder_name)
