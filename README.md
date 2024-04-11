@@ -12,25 +12,21 @@ Listener on the monitor folder (customizable in the config file) with watchdog
 
 Creates a tmp folder associated with the conversation as long as the file keeps being updated for the past minute.
 
-Archives everything under asterisk folder, content of the folder include a copy of the audio files as well as two separate transcript and a unified transcription
+Archives everything under asterisk folder, content of the folder include a copy of the audio files as well as two separate transcript files. and a unified transcription
 
 Plug the unified transcription on a web interface
 
 Docker container can be plugged in read mode on asterisk monitor folder for process isolation.
 
-# Todo
+## Todo
 
-- Plug on monitor interface
-- Transcribe
-- Parse transcription
-
-
-Improve transcriptions.
- - Unified file with signal processing to work with interruptions
-
-
-Also:
-- Fix unsafe Wekzeug usage for production
+- Decide on output folder location
+- Decide on a format for unified transcription.
+- Generate a single file with unified transcription for processing
+- Generate a web page (frontend similar to a chat interface) to review transcriptions
+- Parse transcription to support actions
+- Document
+- Signal processing to support callout and reduce processing needs, and support interruption (Complex task, don't underestimate)
 
 ## Getting Started
 
@@ -47,11 +43,11 @@ Also, for optional dependencies:
 - ffmpeg (for the audio processing (both this project and openai-whisper))
 - Docker (optional for containerization)
 
-And for the audio outputs (dependencies from pyttsx3, see [Synthesizer support](https://pyttsx3.readthedocs.io/en/latest/support.html)):
+### Running this project
 
-- sapi5 (Windows)
-- nsss (Mac OS)
-- espeak (Linux)
+Install the packages from requirements.txt, customize the config.yaml, run with `python3 setup.py`
+
+With Docker, edit config.yaml, if necessary, build with `docker build -t asterisk-transcribe-and-act .`, run with `docker run -v $(ASTERISK_FOLDER):$(ASTERISK_FOLDER_FROM_CONFIG) asterisk-transcribe-and-act:latest`.
 
 ## Contributing
 
