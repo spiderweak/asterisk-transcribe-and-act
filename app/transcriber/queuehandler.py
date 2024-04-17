@@ -25,16 +25,14 @@ class EventQueue(deque):
         """
         # Placeholder processing logic; override this method
         logging.debug(f"Processing item: {item}")
-
-        logging.debug(f"Running transcription handler")
-        item.transcribe()
+        item.process()
 
     def _process_queue(self):
         """Continuously process items from the queue."""
         i = 0
         while True:
             if self:
-                time.sleep(5)
+                time.sleep(1)
                 print(f"Processed {i} items for now")
                 item = self.popleft()  # Wait for an item to be available
                 print(f"Processing item {i+1}")

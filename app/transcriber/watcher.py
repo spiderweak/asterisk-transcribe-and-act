@@ -2,7 +2,7 @@ import time
 import os
 import logging
 
-from typing import Optional
+from typing import Optional, Union
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 
@@ -21,7 +21,15 @@ class Watcher:
     def run(self):
         event_handler = EventHandler(self.processing_queue, self.file_type)
         self.observer.schedule(event_handler, self.watch_directory, recursive=True)
-        self.observer.start()
+        try:
+            self.observer.start()
+        except FileNotFoundError as fnfe:
+            print(f"{fnfe}, creating folder {self.watch_directory}")
+            os.makedirs(self.watch_directory)
+            self.observer.start
+
+        logging.info("Watcher Running")
+
         try:
             while True:
                 time.sleep(1)
@@ -60,14 +68,14 @@ class EventHandler(FileSystemEventHandler):
 
             if transcription_manager is None or transcription_manager in self.processing_queue:
                 # Pair was already processed recently
-                logging.debug(f"No action for this event, action already done or currently processing")
+                logging.debug("No action for this event, action already done or currently processing")
                 return
             else:
-                logging.debug(f"Appending transcription request to queue")
+                logging.debug("Appending transcription request to queue")
                 self.processing_queue.append(transcription_manager)
 
 
-    def process_files(self, file_path, pair_path) -> Optional[AudioTranscriptionManager]:
+    def process_files(self, file_path, pair_path) -> Optional[Union[AudioTranscriptionManager,ConversationTranscriptionManager]]:
         # Determine in_path and out_path based on file naming
         in_path, out_path = (file_path, pair_path) if "in" in file_path else (pair_path, file_path)
 
@@ -81,12 +89,12 @@ class EventHandler(FileSystemEventHandler):
         if self.file_type == "wav":
             # Initialize or retrieve the AudioTranscriptionManager for this conversation
             if unique_identifier not in self.data:
-                self.data[unique_identifier] = AudioTranscriptionManager(in_path, out_path, folder_name)
+                self.data[unique_identifier] = AudioTranscriptionManager(in_path, out_path, folder_name, unique_identifier)
             audio_transcription_manager = self.data[unique_identifier]
             return audio_transcription_manager
         if self.file_type == "csv":
             # Initialize or retrieve the AudioTranscriptionManager for this conversation
             if unique_identifier not in self.data:
-                self.data[unique_identifier] = ConversationTranscriptionManager(in_path, out_path, folder_name)
+                self.data[unique_identifier] = ConversationTranscriptionManager(in_path, out_path, folder_name, unique_identifier)
             conversation_transcription_manager = self.data[unique_identifier]
             return conversation_transcription_manager

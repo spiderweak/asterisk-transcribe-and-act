@@ -1,3 +1,4 @@
-loglevel : debug
+loglevel : info
 logfile : log.txt
-watch_directory: /tmp/asterisk_monitor
+audio_watch_directory: /tmp/asterisk_monitor
+text_watch_directory: /tmp/asterisk_transcript

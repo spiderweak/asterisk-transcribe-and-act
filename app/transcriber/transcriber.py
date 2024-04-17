@@ -33,7 +33,7 @@ class AudioTranscriptionManager:
         ffmpeg_installed (bool): ffmpeg_installation_status
     """
 
-    def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str):
+    def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str, unique_identifier: str):
         """Initializes the AudioTranscriptionManager with an optional temporary folder and session ID.
 
         If no temporary folder is provided, a new one is created. The temporary folder is used for storing audio files.
@@ -61,12 +61,20 @@ class AudioTranscriptionManager:
 
         self.ffmpeg_installed = check_ffmpeg_installed()
 
+        self.unique_identifier = unique_identifier
+
+    def process(self):
+        in_path, out_path = self.transcribe()
+
     def transcribe(self):
         """Transcribes the given audio file using the Whisper model.
 
         Raises:
             Exception: Propagates any exceptions that occur during transcription.
         """
+
+        in_path = None
+        out_path = None
 
         logging.info(f"Copying file to folder and removing times")
         cut_beginning(self.in_file, self.temp_in_file, self.in_timer)
@@ -94,26 +102,26 @@ class AudioTranscriptionManager:
             logging.error(f"Error during outbound transcription: {e}")
             raise
 
-        logging.debug("Transcription completed successfully.")
+        logging.info("Transcription completed successfully.")
 
         try:
-            write_to_file(self.transcription_folder_name, 'transcription-in.csv', self.in_transcription['segments'])
+            in_path = write_to_file(self.transcription_folder_name, f'{self.unique_identifier}-in.csv', self.in_transcription['segments'])
         except KeyError:
             logging.error('Inbound Transcription error')
             print('Inbound Transcription error')
             pass
 
         try:
-            write_to_file(self.transcription_folder_name, 'transcription-out.csv', self.out_transcription['segments'])
+            out_path = write_to_file(self.transcription_folder_name, f'{self.unique_identifier}-out.csv', self.out_transcription['segments'])
         except KeyError:
             logging.error('Outbound Transcription error')
             print('Outbound Transcription error')
             pass
-        
+
 
         logging.debug("Updating times values")
 
-        return (self.in_transcription, self.out_transcription)
+        return (in_path, out_path)
 
 
 DEFAULT_TIMEOUT = 8 # in seconds

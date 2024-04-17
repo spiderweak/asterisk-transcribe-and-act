@@ -11,7 +11,7 @@ def generate_folder(unique_identifier: str) -> str:
         raise ValueError("Unique identifier cannot be empty.")
 
     base_temp_dir = tempfile.gettempdir()
-    conversation_temp_dir = os.path.join(base_temp_dir, f"asterisk_conversations_{unique_identifier}")
+    conversation_temp_dir = os.path.join(base_temp_dir, "asterisk_transcript",f"{unique_identifier}")
 
     # Ensure the directory exists
     os.makedirs(conversation_temp_dir, exist_ok=True)
@@ -27,16 +27,24 @@ def get_pair_path(file_path: str):
             return file_path.replace("-in.wav", "-out.wav")
         elif "-out.wav" in file_path:
             return file_path.replace("-out.wav", "-in.wav")
+        
+        if "-in.csv" in file_path:
+            return file_path.replace("-in.csv", "-out.csv")
+        elif "-out.csv" in file_path:
+            return file_path.replace("-out.csv", "-in.csv")
+
         return None
 
-def write_to_file(folder_name, file_name, data):
+def write_to_file(folder_name, file_name, data) -> str:
     file_path = os.path.join(folder_name, file_name)
 
     # Open the file and write the data
     with open(file_path, 'w') as file:
         for segment in data:
-            line = f"{segment['start']} {segment['end']} {segment['text']}\n"
+            line = f"{segment['start']}; {segment['end']}; \"{segment['text']}\"\n"
             file.write(line)
+
+    return file_path
 
 def purge_file(file: str):
     """Attempts to delete the specified file.
