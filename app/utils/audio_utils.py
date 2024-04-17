@@ -1,6 +1,7 @@
 import subprocess
 import logging
 import wave
+import shutil
 
 def check_ffmpeg_installed():
     """Check if ffmpeg is installed on the system."""
@@ -8,23 +9,34 @@ def check_ffmpeg_installed():
         # Run 'ffmpeg -version' command and capture its output
         subprocess.run(["ffmpeg", "-version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         return True
-    except subprocess.CalledProcessError as e:
-        logging.error("ffmpeg is not installed or not in PATH.")
-        return False
-    except FileNotFoundError:
-        logging.error("ffmpeg command not found.")
-        return False
+    except subprocess.CalledProcessError as cpe:
+        logging.error(f"ffmpeg is not installed or not in PATH : {cpe}")
+        raise
+    except FileNotFoundError as fe:
+        logging.error(f"ffmpeg command not found.  : {fe}")
+        raise
 
 
 def get_wav_duration(filename):
-    with wave.open(filename, 'r') as wav_file:
-        frames = wav_file.getnframes()
-        rate = wav_file.getframerate()
-        duration = frames / float(rate)
-    return duration
+    try:
+        with wave.open(filename, 'r') as wav_file:
+            frames = wav_file.getnframes()
+            rate = wav_file.getframerate()
+            duration = frames / float(rate)
+        return duration
+    except wave.Error:
+        raise
 
 
 def cut_beginning(input_filename, output_filename, cut_seconds):
+
+    if not cut_seconds:
+        try:
+            shutil.copy(input_filename, output_filename)
+            return
+        except:
+            raise
+
     with wave.open(input_filename, 'rb') as infile:
         # Get audio parameters
         n_channels, sampwidth, framerate, n_frames, comptype, compname = infile.getparams()

@@ -1,8 +1,11 @@
 import logging
 import time
+import wave
 
 from collections import deque
 from threading import Thread
+
+MAX_RETRIES = 5
 
 
 class EventQueue(deque):
@@ -35,8 +38,19 @@ class EventQueue(deque):
                 print(f"Processed {i} items for now")
                 item = self.popleft()  # Wait for an item to be available
                 print(f"Processing item {i+1}")
+
+                if isinstance(item, tuple):
+                    item, retries = item
+                else:
+                    retries = 0
+
                 try:
                     self._process_queue_item(item)
+                except wave.Error:
+                    if retries < MAX_RETRIES:
+                        self.append((item,retries+1))
+                    else:
+                        raise
                 finally:
                     # Signal that processing is complete
                     i+=1

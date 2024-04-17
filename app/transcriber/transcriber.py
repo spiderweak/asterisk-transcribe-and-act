@@ -13,6 +13,8 @@ from typing import Optional
 
 from ..utils import check_ffmpeg_installed, get_wav_duration, cut_beginning, write_to_file, MissingPackageError
 
+import wave
+
 # Load Whisper model globally.
 audio_model = whisper.load_model("base")
 
@@ -74,6 +76,9 @@ class AudioTranscriptionManager:
             print(f"Inbound file length is : {get_wav_duration(self.temp_in_file)}")
             in_result = self.model.transcribe(self.temp_in_file, word_timestamps=True)
             self.in_transcription = in_result
+        except wave.Error as we:
+            logging.error(f"Not a wave file: {we}")
+            pass
         except Exception as e:
             logging.error(f"Error during inbound transcription: {e}")
             raise
@@ -82,8 +87,11 @@ class AudioTranscriptionManager:
             print(f"Outbound file length is : {get_wav_duration(self.temp_out_file)}")
             out_result = self.model.transcribe(self.temp_out_file, word_timestamps=True)
             self.out_transcription = out_result#['text'])
+        except wave.Error as we:
+            logging.error(f"Not a wave file: {we}")
+            pass
         except Exception as e:
-            logging.error(f"Error during inbound transcription: {e}")
+            logging.error(f"Error during outbound transcription: {e}")
             raise
 
         logging.debug("Transcription completed successfully.")
