@@ -36,11 +36,12 @@ What things you need to install the software and how to install them:
 
 - python3
 - pip
+- ffmpeg (for the audio processing (both this project and openai-whisper))
+- espeak
 
 Also, for optional dependencies:
 
 - virtualenv
-- ffmpeg (for the audio processing (both this project and openai-whisper))
 - Docker (optional for containerization)
 
 ### Running this project
