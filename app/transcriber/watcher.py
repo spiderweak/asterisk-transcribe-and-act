@@ -12,14 +12,15 @@ from ..utils import  generate_folder, get_pair_path
 
 
 class Watcher:
-    def __init__(self, watch_directory, processing_queue, file_type):
+    def __init__(self, watch_directory, processing_queue, file_type, speech_processing = None):
         self.watch_directory = watch_directory
         self.processing_queue = processing_queue
         self.file_type = file_type
         self.observer = Observer()
+        self.speech_processing = speech_processing
 
     def run(self):
-        event_handler = EventHandler(self.processing_queue, self.file_type)
+        event_handler = EventHandler(self.processing_queue, self.file_type, self.speech_processing)
         self.observer.schedule(event_handler, self.watch_directory, recursive=True)
         try:
             self.observer.start()
@@ -39,10 +40,11 @@ class Watcher:
 
 
 class EventHandler(FileSystemEventHandler):
-    def __init__(self, processing_queue, file_type):
+    def __init__(self, processing_queue, file_type, speech_processing = None):
         self.data = dict()
         self.processing_queue = processing_queue
         self.file_type = file_type
+        self.speech_processing = speech_processing
 
     def on_created(self, event):
         if event.is_directory or not event.src_path.endswith(f'.{self.file_type}'):
@@ -95,6 +97,6 @@ class EventHandler(FileSystemEventHandler):
         if self.file_type == "csv":
             # Initialize or retrieve the AudioTranscriptionManager for this conversation
             if unique_identifier not in self.data:
-                self.data[unique_identifier] = ConversationTranscriptionManager(in_path, out_path, folder_name, unique_identifier)
+                self.data[unique_identifier] = ConversationTranscriptionManager(in_path, out_path, folder_name, unique_identifier, self.speech_processing)
             conversation_transcription_manager = self.data[unique_identifier]
             return conversation_transcription_manager

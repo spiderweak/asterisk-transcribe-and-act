@@ -75,8 +75,10 @@ class Config:
         except FileNotFoundError:
             pass
 
-
         logging.basicConfig(filename=self.log_filename, encoding='utf-8', level=self.log_level)
+        logging.getLogger('whisper').setLevel(logging.INFO)
+        logging.getLogger('numba').setLevel(logging.INFO)
+        logging.getLogger('watchdog').setLevel(logging.INFO)
         logging.info('\n')
 
     def _set_attribute_from_yaml(self, attr_name: str, yaml_path: list, value_type: type) -> None:

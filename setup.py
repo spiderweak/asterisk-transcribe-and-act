@@ -12,8 +12,10 @@ from dotenv import load_dotenv
 
 from app.transcriber.watcher import Watcher
 from app.transcriber.queuehandler import EventQueue
+from app.renderer.speech import SpeechProcessor
 from app.utils import Config
 
+import asyncio
 
 def load_environment_variables():
     """Load environment variables from the .env file."""
@@ -43,8 +45,8 @@ def main():
     audio_processing_queue = EventQueue()
     conversation_processing_queue = EventQueue()
 
-    #watch_directory = "/path/to/your/asterisk/monitor/folder"
-    text_watcher = Watcher(config.parsed_yaml["text_watch_directory"], conversation_processing_queue, "csv")
+    speech_processor = SpeechProcessor()
+    text_watcher = Watcher(config.parsed_yaml["text_watch_directory"], conversation_processing_queue, "csv", speech_processor)
     audio_watcher = Watcher(config.parsed_yaml["audio_watch_directory"], audio_processing_queue, "wav")
 
     # Start the file watcher in a separate thread
@@ -56,6 +58,9 @@ def main():
 
     text_watcher_thread = Thread(target=text_watcher.run, daemon=True)
     text_watcher_thread.start()
+
+    speech_watcher_thread = Thread(target=speech_processor.run, daemon=True)
+    speech_watcher_thread.start()
 
     while True:
         time.sleep(1)

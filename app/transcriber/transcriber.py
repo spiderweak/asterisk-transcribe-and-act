@@ -17,6 +17,11 @@ import wave
 
 # Load Whisper model globally.
 audio_model = whisper.load_model("base")
+# Possible models are :
+# ['tiny.en', 'tiny', 'base.en', 'base', 'small.en', 'small', 'medium.en', 'medium', 'large-v1', 'large-v2', 'large-v3', 'large']
+# In case of updated list, list should be available with the following commands in a python terminal
+# import whisper
+# whisper.avaiable_models()
 
 class AudioTranscriptionManager:
     """Manages the transcription of audio data for a session.
@@ -106,6 +111,7 @@ class AudioTranscriptionManager:
 
         try:
             in_path = write_to_file(self.transcription_folder_name, f'{self.unique_identifier}-in.csv', self.in_transcription['segments'])
+            logging.debug(f"writing data to {self.transcription_folder_name}/{self.unique_identifier}-in.csv")
         except KeyError:
             logging.error('Inbound Transcription error')
             print('Inbound Transcription error')
@@ -113,6 +119,7 @@ class AudioTranscriptionManager:
 
         try:
             out_path = write_to_file(self.transcription_folder_name, f'{self.unique_identifier}-out.csv', self.out_transcription['segments'])
+            logging.debug(f"writing data to {self.transcription_folder_name}/{self.unique_identifier}-out.csv")
         except KeyError:
             logging.error('Outbound Transcription error')
             print('Outbound Transcription error')

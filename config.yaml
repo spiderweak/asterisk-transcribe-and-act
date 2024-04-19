@@ -1,4 +1,5 @@
-loglevel : info
+loglevel : debug
 logfile : log.txt
 audio_watch_directory: /tmp/asterisk_monitor
 text_watch_directory: /tmp/asterisk_transcript
+api_url: http://10.11.0.8:5200/api/Asterisk/upload

@@ -27,7 +27,7 @@ def get_pair_path(file_path: str):
             return file_path.replace("-in.wav", "-out.wav")
         elif "-out.wav" in file_path:
             return file_path.replace("-out.wav", "-in.wav")
-        
+
         if "-in.csv" in file_path:
             return file_path.replace("-in.csv", "-out.csv")
         elif "-out.csv" in file_path:

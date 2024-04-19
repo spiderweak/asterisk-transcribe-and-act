@@ -3,3 +3,4 @@ python-dotenv
 watchdog
 pyyaml
 pandas
+pyttsx3

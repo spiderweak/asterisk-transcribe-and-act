@@ -3,6 +3,7 @@ import logging
 import wave
 import shutil
 
+
 def check_ffmpeg_installed():
     """Check if ffmpeg is installed on the system."""
     try:
