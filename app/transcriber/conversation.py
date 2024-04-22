@@ -16,6 +16,7 @@ from typing import Optional
 from ..renderer.speech import SpeechProcessor
 from ..renderer.tts import audio_synthesis
 
+import json
 import asyncio
 
 # Load Whisper model globally.
@@ -132,6 +133,8 @@ def upload_to_mission_planner(url, filepath):
 
     if response.status_code == 201:
         logging.debug("File uploaded successfully.")
+        chatbot_feedback =  json.loads(response.text)
+        return chatbot_feedback["chatBotFeedBack"]
     else:
         logging.error(f"Error uploading file. Status code: {response.status_code}")
         logging.error(response.text)
