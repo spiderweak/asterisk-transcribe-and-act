@@ -7,6 +7,8 @@ import time
 import logging
 import subprocess
 
+from ..utils import get_wav_duration
+
 # Default timeout, 10s
 TTS_TIMEOUT = 10
 
@@ -42,7 +44,7 @@ class TextToSpeechConverter:
             time.sleep(0.2)  # Wait a bit for the file to be created
             if time.time() - start_time > self._tts_timeout:
                 logging.error(f"Timeout while waiting for the audio file {temp_filename} to be created.")
-                raise TextToSpeechTimeoutError("Timeout waiting for the audio file to be created.")
+                #raise TextToSpeechTimeoutError("Timeout waiting for the audio file to be created.")
 
         try:
             with open(temp_filename, 'rb') as audio_file:
@@ -53,27 +55,32 @@ class TextToSpeechConverter:
             os.remove(temp_filename)
             logging.debug(f"Temporary audio file {temp_filename} deleted.")
 
-        return base64_audio
+        return temp_filename, base64_audio
 
 
 def audio_synthesis(sentence, temp_folder_name, conversation_unique_id):
     try:
         tts_interface = TextToSpeechConverter()
-        base64_audio = tts_interface.convert_text_to_speech(sentence, temp_folder_name)
-        send_to_asterisk(base64_audio, conversation_unique_id)
+        temp_filename, _ = tts_interface.convert_text_to_speech(sentence, temp_folder_name)
+        send_to_asterisk(temp_filename, conversation_unique_id)
         del tts_interface
     except NotImplementedError as nie:
         logging.error("Audio synthesis implemented, but audio not sent to asterisk yet")
     except Exception as e:
         logging.error(f"Audio error : {e}")
 
-def send_to_asterisk(base64_data : str, conversation_unique_id):
-    """
-        base64_data is a base64 encoded string that contains the audio data
-        Will need an updated way to send the data to asterisk
-        The following line is a baseline that runs a linux command
-        Will need to modify it to play the audio file
-        Maybe from a file written on disk, but in that case the base64_data needs to be written to a file first.
-    """
-    raise NotImplementedError("Missing the command to send the data to asterisk")
-    subprocess.run("?", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+def send_to_asterisk(filename : str, conversation_unique_id):
+    # check length
+    if get_wav_duration(filename) < 5:
+        raise ValueError("Andwer too short")
+
+    # Design a counter (from listing the files with conversation_unique_id in output foulder ?)
+    count = 1
+
+    # Need to os.path.join with the correct path with output folder
+    output_file = str(conversation_unique_id) + "-" + str(count) + ".gsm"
+
+    subprocess.run(["ffmpeg", "-i", filename, "-ar", "8000", "-ac", "1", "-ab", "13k", "-c:a", "gsm", output_file], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+    # Design the same command to play output_file in the audio conversation
+    #subprocess.run(["ffmpeg", "-i", filename, "-ar", "8000", "-ac", "1", "-ab", "13k", "-c:a", "gsm", output_file], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
