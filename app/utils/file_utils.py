@@ -1,6 +1,8 @@
 import logging
 import os
 import tempfile
+import requests
+import json
 
 def generate_folder(unique_identifier: str) -> str:
     """Generates a folder based on given folder name
@@ -59,3 +61,21 @@ def purge_file(file: str):
         os.remove(file)
     except OSError as e:
         logging.warning(f"Failed to delete file: {e}")
+
+
+def upload_to_mission_planner(url, port, filepath):
+    api_url = "http://" + url + ":"+ str(port) + "/api/Asterisk/upload"
+    logging.info(f"Upload file to : {api_url}")
+    with open(filepath, "rb") as file:
+        files = {"file": (filepath, file)}
+        response = requests.post(api_url, files=files)
+
+    if response.status_code == 201:
+        response_json = json.loads(response.text)
+        chat_bot_feedback = response_json["chatBotFeedBack"]
+        logging.debug(chat_bot_feedback)
+        return 201, chat_bot_feedback
+    else:
+        logging.error(f"Error uploading file. Status code: {response.status_code}")
+        logging.error(response.text)
+        return response.status_code, "Error uploading file"

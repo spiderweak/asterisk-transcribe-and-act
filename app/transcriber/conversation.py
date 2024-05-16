@@ -16,11 +16,9 @@ from typing import Optional
 from ..renderer.speech import SpeechProcessor
 from ..renderer.tts import audio_synthesis
 
-import json
-import asyncio
+from ..utils import upload_to_mission_planner
 
-# Load Whisper model globally.
-audio_model = whisper.load_model("base")
+import asyncio
 
 class ConversationTranscriptionManager:
     """Manages the transcribed audio data.
@@ -35,7 +33,7 @@ class ConversationTranscriptionManager:
     """
 
     def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str, unique_identifier:str, speech_processing : Optional[SpeechProcessor]):
-        """Initializes the AudioTranscriptionManager with an optional temporary folder and session ID.
+        """Initializes the ConversationTranscriptionManager with an optional temporary folder and session ID.
 
         If no temporary folder is provided, a new one is created. The temporary folder is used for storing audio files.
         The session ID, if provided, is used to identify the session associated with this manager.
@@ -79,7 +77,7 @@ class ConversationTranscriptionManager:
     def handle_upload_and_synthesis(self):
         """Upload the transcription file and handle audio synthesis."""
         try:
-            response = upload_to_mission_planner("10.11.0.8", self.transcription_file)
+            response = upload_to_mission_planner("10.11.0.8", 5200, self.transcription_file)
             if response:
                 audio_synthesis(response, self.transcription_folder_name, self.unique_identifier)
                 return response
@@ -122,20 +120,4 @@ class ConversationTranscriptionManager:
                 output += (line + '\n')
 
         return output
-
-
-def upload_to_mission_planner(url, filepath):
-    api_url = "http://" + url + ":5200/api/Asterisk/upload"
-    logging.info(f"Upload file to : {api_url}")
-    with open(filepath, "rb") as file:
-        files = {"file": (filepath, file)}
-        response = requests.post(api_url, files=files)
-
-    if response.status_code == 201:
-        logging.debug("File uploaded successfully.")
-        chatbot_feedback =  json.loads(response.text)
-        return chatbot_feedback["chatBotFeedBack"]
-    else:
-        logging.error(f"Error uploading file. Status code: {response.status_code}")
-        logging.error(response.text)
 
