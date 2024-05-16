@@ -2,6 +2,31 @@ import subprocess
 import logging
 import wave
 import shutil
+import whisper
+
+def singleton(cls):
+    instances = {}
+
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+
+    return get_instance
+
+@singleton
+class AudioModel:
+    def __init__(self):
+        self.model = whisper.load_model("base")
+
+        # Possible models are :
+        # ['tiny.en', 'tiny', 'base.en', 'base', 'small.en', 'small', 'medium.en', 'medium', 'large-v1', 'large-v2', 'large-v3', 'large']
+        # In case of updated list, list should be available with the following commands in a python terminal
+        # import whisper
+        # whisper.avaiable_models()
+
+    def get_model(self):
+        return self.model
 
 
 def check_ffmpeg_installed():

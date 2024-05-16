@@ -12,18 +12,13 @@ import os
 from typing import Optional
 
 from ..utils import check_ffmpeg_installed, get_wav_duration, cut_beginning, write_to_file, MissingPackageError
-
+from ..utils import AudioModel
 import wave
 
 # Load Whisper model globally.
-audio_model = whisper.load_model("base")
-# Possible models are :
-# ['tiny.en', 'tiny', 'base.en', 'base', 'small.en', 'small', 'medium.en', 'medium', 'large-v1', 'large-v2', 'large-v3', 'large']
-# In case of updated list, list should be available with the following commands in a python terminal
-# import whisper
-# whisper.avaiable_models()
+audio_model = AudioModel().get_model()
 
-class AudioTranscriptionManager:
+class DualAudioTranscriptionManager:
     """Manages the transcription of audio data for a session.
 
     This class handles audio blobs, stores them in a queue, and uses the Whisper model for transcription. 
@@ -39,7 +34,7 @@ class AudioTranscriptionManager:
     """
 
     def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str, unique_identifier: str):
-        """Initializes the AudioTranscriptionManager with an optional temporary folder and session ID.
+        """Initializes the DualAudioTranscriptionManager with an optional temporary folder and session ID.
 
         If no temporary folder is provided, a new one is created. The temporary folder is used for storing audio files.
         The session ID, if provided, is used to identify the session associated with this manager.

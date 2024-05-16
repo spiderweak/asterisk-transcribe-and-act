@@ -6,7 +6,7 @@ from typing import Optional, Union
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 
-from .transcriber import AudioTranscriptionManager
+from .transcriber import DualAudioTranscriptionManager
 from .conversation import ConversationTranscriptionManager
 from ..utils import  generate_folder, get_pair_path
 
@@ -77,7 +77,7 @@ class EventHandler(FileSystemEventHandler):
                 self.processing_queue.append(transcription_manager)
 
 
-    def process_files(self, file_path, pair_path) -> Optional[Union[AudioTranscriptionManager,ConversationTranscriptionManager]]:
+    def process_files(self, file_path, pair_path) -> Optional[Union[DualAudioTranscriptionManager,ConversationTranscriptionManager]]:
         # Determine in_path and out_path based on file naming
         in_path, out_path = (file_path, pair_path) if "in" in file_path else (pair_path, file_path)
 
@@ -89,13 +89,13 @@ class EventHandler(FileSystemEventHandler):
         logging.debug(f"Temporary folder for conversation: {folder_name}")
 
         if self.file_type == "wav":
-            # Initialize or retrieve the AudioTranscriptionManager for this conversation
+            # Initialize or retrieve the DualAudioTranscriptionManager for this conversation
             if unique_identifier not in self.data:
-                self.data[unique_identifier] = AudioTranscriptionManager(in_path, out_path, folder_name, unique_identifier)
+                self.data[unique_identifier] = DualAudioTranscriptionManager(in_path, out_path, folder_name, unique_identifier)
             audio_transcription_manager = self.data[unique_identifier]
             return audio_transcription_manager
         if self.file_type == "csv":
-            # Initialize or retrieve the AudioTranscriptionManager for this conversation
+            # Initialize or retrieve the DualAudioTranscriptionManager for this conversation
             if unique_identifier not in self.data:
                 self.data[unique_identifier] = ConversationTranscriptionManager(in_path, out_path, folder_name, unique_identifier, self.speech_processing)
             conversation_transcription_manager = self.data[unique_identifier]
