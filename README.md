@@ -46,7 +46,7 @@ Also, for optional dependencies:
 
 ### Running this project
 
-Install the packages from requirements.txt, customize the config.yaml, run with `python3 setup.py`
+Install the packages from requirements.txt, customize the config.yaml, run with `python3 run.py`
 
 With Docker, edit config.yaml, if necessary, build with `docker build -t asterisk-transcribe-and-act .`, run with `docker run -v $(ASTERISK_FOLDER):$(ASTERISK_FOLDER_FROM_CONFIG) asterisk-transcribe-and-act:latest`.
 
@@ -57,6 +57,8 @@ This project does not accept exterior contributions for now.
 ## Authors
 
 Antoine ["Spiderweak"](https://github.com/spiderweak) BERNARD
+
+David Communier
 
 ## License
 

@@ -11,7 +11,7 @@ RUN apt-get update && \
 RUN mkdir /app
 WORKDIR /app
 
-COPY requirements.txt setup.py entrypoint.sh config.yaml ./
+COPY requirements.txt run.py entrypoint.sh config.yaml ./
 COPY app/transcriber app/transcriber
 COPY app/utils app/utils
 
