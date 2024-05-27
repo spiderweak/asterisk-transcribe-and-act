@@ -72,7 +72,7 @@ def audio_synthesis(sentence, temp_folder_name, conversation_unique_id):
 def send_to_asterisk(filename : str, conversation_unique_id):
     # check length
     if get_wav_duration(filename) < 5:
-        raise ValueError("Andwer too short")
+        raise ValueError("Answer too short")
 
     # Design a counter (from listing the files with conversation_unique_id in output foulder ?)
     count = 1

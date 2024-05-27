@@ -68,3 +68,4 @@ Unless part of the system is incompatible with it, consider this project under C
 
 Thanks to these project, that make most of the project run
 - OpenAI for the Whisper model and for the disclaimer in the opening statement of this README.
+- 
