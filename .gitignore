@@ -2,3 +2,7 @@
 __pycache__
 log.txt
 test_audio
+*.wav
+*.mp3
+*.gsm
+_build
