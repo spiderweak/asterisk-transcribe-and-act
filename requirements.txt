@@ -5,4 +5,4 @@ pyyaml
 pandas
 pyttsx3
 SpeechRecognition
-asterisk
+asterisk-ami
