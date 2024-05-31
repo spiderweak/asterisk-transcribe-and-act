@@ -49,9 +49,17 @@ Also, for optional dependencies:
 Running this project
 ^^^^^^^^^^^^^^^^^^^^
 
-Install the packages from requirements.txt, customize the config.yaml, run with `python3 run.py`
+Install the packages from requirements.txt, customize the config.yaml, run with::
 
-With Docker, edit config.yaml, if necessary, build with `docker build -t asterisk-transcribe-and-act .`, run with `docker run -v $(ASTERISK_FOLDER):$(ASTERISK_FOLDER_FROM_CONFIG) asterisk-transcribe-and-act:latest`.
+    python3 run.py
+
+With Docker, edit config.yaml, if necessary, build with::
+
+    docker build -t asterisk-transcribe-and-act .
+
+run with::
+
+    docker run -v $(ASTERISK_FOLDER):$(ASTERISK_FOLDER_FROM_CONFIG) asterisk-transcribe-and-act:latest
 
 Contributing
 ------------
@@ -73,6 +81,6 @@ Unless part of the system is incompatible with it, consider this project under C
 Acknowledgments
 ---------------
 
-Thanks to these project, that make most of the project run
+Thanks to these project, that make most of the project run:
 - OpenAI for the Whisper model and for the disclaimer in the opening statement of this README.
 - 
