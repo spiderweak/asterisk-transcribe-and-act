@@ -3,9 +3,13 @@ Asterisk Transcribe and Act
 
 This software aims to design a service that transcribe and act based on keywords from an audio conversation backed by the asterisk VoIP solution.
 
-There is two possibilities for this to work, the first is to mount the monitor folder read only in a docker container, the second is to install the service.
+There is two possibilities for this to work, the first is to mount the monitor folder read only in a docker container, the second is to run the project as is.
 
 This software is provided as is, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
+
+This project is composed of two parts: 
+*run.py is an entrypoint for a transcriber that transcribes a conversation between two users (INbound and OUTbound) and sends the transcript to our mission planner based on a keyword detection and after waiting some time (1 minute by default)
+*agi_script directly uses the asterisk.ami library to plug onto an audio conference, transcribe and send the request to the mission planner, it does not support parallel audio conferences for now.
 
 Features
 --------
