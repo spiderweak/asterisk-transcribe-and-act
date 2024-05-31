@@ -4,6 +4,6 @@ watchdog
 pyyaml
 pandas
 pyttsx3
-speech_recognition
+SpeechRecognition
 asterisk
 azure
