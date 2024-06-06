@@ -7,9 +7,12 @@ There is two possibilities for this to work, the first is to mount the monitor f
 
 This software is provided as is, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
 
-This project is composed of two parts: 
-*run.py is an entrypoint for a transcriber that transcribes a conversation between two users (INbound and OUTbound) and sends the transcript to our mission planner based on a keyword detection and after waiting some time (1 minute by default)
-*agi_script directly uses the asterisk.ami library to plug onto an audio conference, transcribe and send the request to the mission planner, it does not support parallel audio conferences for now.
+This project does not aim to teach you to deploy you own asterisk server, you will need a working asterisk server with monitoring enable for this project to work, please refer to `Asterisk <https://www.asterisk.org/get-started/>`_ documentation if you need help deploying your own asterisk server.
+
+This project is composed of two parts:
+
+* run.py is an entrypoint for a transcriber that transcribes a conversation between two users (INbound and OUTbound) and sends the transcript to our mission planner based on a keyword detection and after waiting some time (1 minute by default)
+* agi_script directly uses the asterisk.ami library to plug onto an audio conference, transcribe and send the request to the mission planner, it does not support parallel audio conferences for now.
 
 Features
 --------
@@ -27,10 +30,10 @@ Docker container can be plugged in read mode on asterisk monitor folder for proc
 Todo
 ----
 
-- Generate a web page (frontend similar to a chat interface) to review transcriptions
-- Parse transcription to support actions
-- Document
-- Signal processing to support callout and reduce processing needs, and support interruption (Complex task, don't underestimate)
+* Generate a web page (frontend similar to a chat interface) to review transcriptions
+* Parse transcription to support actions
+* Document
+* Signal processing to support callout and reduce processing needs, and support interruption (Complex task, don't underestimate)
 
 Getting Started
 ---------------
@@ -73,7 +76,7 @@ This project does not accept exterior contributions for now.
 Authors
 -------
 
-Antoine ["Spiderweak"](https://github.com/spiderweak) BERNARD
+Antoine `Spiderweak <https://github.com/spiderweak/>`_ BERNARD
 
 David Communier
 
@@ -86,5 +89,6 @@ Acknowledgments
 ---------------
 
 Thanks to these project, that make most of the project run:
-- OpenAI for the Whisper model and for the disclaimer in the opening statement of this README.
-- 
+
+
+* OpenAI for the Whisper model and for the disclaimer in the opening statement of this README.

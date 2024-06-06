@@ -1,26 +1,44 @@
+"""
+This module provides the Config class for loading and managing the application's configuration settings from a YAML file or default values. It also sets up logging based on the loaded configuration.
+
+Classes:
+
+* Config: Handles loading, parsing, and applying configuration settings from a YAML file.
+
+Functions:
+
+* set_defaults: Sets default values for all attributes.
+* load_yaml: Loads settings from a YAML file.
+* setup_logging: Initializes logging based on parsed YAML.
+* _set_attribute_from_yaml: Helper function to set attribute from parsed YAML.
+"""
+
 import yaml
 import logging
 import os
 from typing import Any, Dict, Union
-
 import argparse
 
-
 class Config:
+    """
+    Config class to handle application configuration settings.
+
+    Attributes:
+        DEFAULT_LOG_LEVEL (int): Default log level.
+        DEFAULT_LOG_FILENAME (str): Default log filename.
+        parsed_yaml (Dict[str, Any]): Parsed YAML configuration data.
+        log_level (int): Log level.
+        log_filename (str): Log filename.
+    """
     DEFAULT_LOG_LEVEL = logging.INFO
     DEFAULT_LOG_FILENAME: str = 'log.txt'
 
     def __init__(self, *, options: argparse.Namespace):
-        """Initializes the application configuration with default values or values from a YAML file.
+        """
+        Initializes the application configuration with default values or values from a YAML file.
 
         Args:
-            options (argparse.Namespace): parsed command-line options
-            env (Environment): simulation environment
-
-        Attributes:
-            parsed_yaml (Dict[str, Any]): Contains the parsed configuration YAML file, stored as a dict.
-            log_level (int): Integer representation of the parsed log level.
-            log_filename (str): Log file name.
+            options (argparse.Namespace): Parsed command-line options.
         """
         self.set_defaults()
 
@@ -32,17 +50,19 @@ class Config:
         self.setup_logging()
 
     def set_defaults(self) -> None:
-        """Sets default values for all attributes."""
+        """
+        Sets default values for all attributes.
+        """
         self.parsed_yaml: Dict[str, Any] = {}
-        self.log_level : int = self.DEFAULT_LOG_LEVEL
+        self.log_level: int = self.DEFAULT_LOG_LEVEL
         self.log_filename: str = self.DEFAULT_LOG_FILENAME
 
-
     def load_yaml(self, config_file_path: str) -> None:
-        """Loads settings from a YAML file.
+        """
+        Loads settings from a YAML file.
 
         Args:
-            config_file_path (str): Configuration File Path
+            config_file_path (str): Path to the configuration file.
         """
         try:
             with open(config_file_path, 'r') as config_file:
@@ -51,8 +71,9 @@ class Config:
             logging.error("Configuration File Not Found, using default settings.")
 
     def setup_logging(self) -> None:
-        """Initializes logging based on parsed YAML."""
-
+        """
+        Initializes logging based on parsed YAML configuration.
+        """
         try:
             match self.parsed_yaml.get('loglevel', 'info'):
                 case 'error':
@@ -75,7 +96,11 @@ class Config:
         except FileNotFoundError:
             pass
 
-        logging.basicConfig(filename=self.log_filename, encoding='utf-8', level=self.log_level)
+        logging.basicConfig(
+            filename=self.log_filename,
+            encoding='utf-8',
+            level=self.log_level
+        )
         logging.getLogger('whisper').setLevel(logging.INFO)
         logging.getLogger('numba').setLevel(logging.INFO)
         logging.getLogger('watchdog').setLevel(logging.INFO)
