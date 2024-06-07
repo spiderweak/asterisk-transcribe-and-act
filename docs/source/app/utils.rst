@@ -8,6 +8,9 @@ Package contents
 ----------------
 
 .. automodule:: app.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Audio\_utils module
 -------------------

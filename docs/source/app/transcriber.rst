@@ -1,53 +1,50 @@
-transcriber package
+Transcriber package
 ===================
 
-Submodules
-----------
+Package contents
+----------------
 
-app.transcriber.asterisk\_interco module
-----------------------------------------
+.. automodule:: app.transcriber
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Asterisk\_interco module
+------------------------
 
 .. automodule:: app.transcriber.asterisk_interco
    :members:
    :undoc-members:
    :show-inheritance:
 
-app.transcriber.conversation module
------------------------------------
+Conversation module
+-------------------
 
 .. automodule:: app.transcriber.conversation
    :members:
    :undoc-members:
    :show-inheritance:
 
-app.transcriber.queuehandler module
------------------------------------
+Queuehandler module
+-------------------
 
 .. automodule:: app.transcriber.queuehandler
    :members:
    :undoc-members:
    :show-inheritance:
 
-app.transcriber.transcriber module
-----------------------------------
+Transcriber module
+------------------
 
 .. automodule:: app.transcriber.transcriber
    :members:
    :undoc-members:
    :show-inheritance:
 
-app.transcriber.watcher module
-------------------------------
+Watcher module
+--------------
 
 .. automodule:: app.transcriber.watcher
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: app.transcriber
    :members:
    :undoc-members:
    :show-inheritance:

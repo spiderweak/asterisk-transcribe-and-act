@@ -6,3 +6,5 @@ pandas
 pyttsx3
 SpeechRecognition
 asterisk-ami
+gTTS
+pydub

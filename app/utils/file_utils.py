@@ -102,13 +102,13 @@ def purge_file(file: str):
     except OSError as e:
         logging.warning(f"Failed to delete file: {e}")
 
-def upload_to_mission_planner(url: str, port: str, file_path: str) -> tuple:
+def upload_to_mission_planner(url: str, port: int, file_path: str) -> tuple:
     """
     Uploads a file to the mission planner.
 
     Args:
         url (str): The URL of the mission planner.
-        port (str): The port of the mission planner.
+        port (int): The port of the mission planner.
         file_path (str): The path of the file to upload.
 
     Returns:

@@ -1,3 +1,29 @@
+"""
+This module provides the AsteriskInterco class to handle interactions with the Asterisk server. 
+It includes methods for connecting and disconnecting from Asterisk, starting and stopping recordings, 
+playing audio, converting text to speech, and handling Asterisk events.
+
+Classes:
+    AsteriskInterco: A class to manage Asterisk server interactions.
+
+Functions:
+
+* connection_asterisk: Establishes a connection to the Asterisk server.
+* disconnect_asterisk: Disconnects from the Asterisk server.
+* activate_spy: Activates spying on the conference.
+* stop_spy: Stops spying on the conference.
+* play_audio: Plays audio in the conference.
+* start_record_request: Starts recording on a specified channel.
+* stop_recording_request: Stops recording on a specified channel.
+* text_to_speech: Converts text to speech and saves it as an audio file.
+* speech_to_text: Converts speech to text using the Whisper model.
+* wait_for_conference: Waits for a conference to start.
+* wait_for_start: Waits for the start of the conference.
+* wait_for_stop: Waits for the stop of the conference.
+* save_string_to_file: Saves a string to a file.
+* on_event: Handles Asterisk events.
+"""
+
 import logging
 import whisper
 import requests
@@ -22,8 +48,24 @@ key_words_prompt = "Key words to detect: {}.".format(", ".join(KEY_WORDS))
 
 audio_model = AudioModel().get_model()
 
-class AsteriskInterop:
-    def __init__(self):
+class AsteriskInterco:
+    """
+    A class to handle interactions with the Asterisk server.
+
+    Attributes:
+        model (whisper.Whisper): The Whisper model used for transcription.
+        conference_name (str): The name of the current conference.
+        start (bool): Flag to indicate the start of an event.
+        stop (bool): Flag to indicate the stop of an event.
+        start_time (float): The start time of an event.
+        talkerId_recorded (str): The ID of the recorded talker.
+        ami (AMIClient): The AMI client for connecting to Asterisk.
+    """
+
+    def __init__(self) -> None:
+        """
+        Initializes the AsteriskInterco class.
+        """
         self.model : whisper.Whisper = audio_model
         self.conference_name = None
         self.start = False
@@ -33,21 +75,36 @@ class AsteriskInterop:
         self.ami = None
 
     def connection_asterisk(self):
+        """
+        Establishes a connection to the Asterisk server.
+        """
         self.ami = AMIClient(address=HOST, port=PORT, timeout=None)
         self.ami.login(username=USERNAME, secret=PASSWORD)
         self.ami.add_event_listener(on_event=self.on_event)
 
     def disconnect_asterisk(self):
+        """
+        Disconnects from the Asterisk server.
+        """
         if self.ami:
             self.ami.logoff()
 
-    def activate_spy(self, file_name = "input.wav"):
+    def activate_spy(self, file_name="input.wav"):
+        """
+        Activates spying on the conference.
+
+        Args:
+            file_name (str): The name of the file to save the recording.
+
+        Returns:
+            dict: The response from the Asterisk server.
+        """
         if self.ami:
             action = SimpleAction(
                 'ConfbridgeStartRecord',
-                ActionID = 'StartRecording',
-                Conference = self.conference_name,
-                RecordFile = f"/var/spool/asterisk/monitor/{file_name}",
+                ActionID='StartRecording',
+                Conference=self.conference_name,
+                RecordFile=f"/var/spool/asterisk/monitor/{file_name}",
             )
             future = self.ami.send_action(action)
             try:
@@ -59,11 +116,17 @@ class AsteriskInterop:
             raise ValueError("AMI Client Error")
 
     def stop_spy(self):
+        """
+        Stops spying on the conference.
+
+        Returns:
+            dict: The response from the Asterisk server.
+        """
         if self.ami:
             action = SimpleAction(
                 'ConfbridgeStopRecord',
-                ActionID = 'StopRecording',
-                Conference = self.conference_name,
+                ActionID='StopRecording',
+                Conference=self.conference_name,
             )
             future = self.ami.send_action(action)
             try:
@@ -75,6 +138,12 @@ class AsteriskInterop:
             raise ValueError("AMI Client Error")
 
     def play_audio(self):
+        """
+        Plays audio in the conference.
+
+        Returns:
+            dict: The response from the Asterisk server.
+        """
         if self.ami:
             action = SimpleAction(
                 'originate',
@@ -91,6 +160,15 @@ class AsteriskInterop:
             raise ValueError("AMI Client Error")
 
     def start_record_request(self, channel):
+        """
+        Starts recording on a specified channel.
+
+        Args:
+            channel (str): The channel to start recording on.
+
+        Returns:
+            dict: The response from the Asterisk server.
+        """
         if self.ami:
             logging.info(f"Starting recording of {channel}")
             action = SimpleAction(
@@ -109,6 +187,15 @@ class AsteriskInterop:
             raise ValueError("AMI Client Error")
 
     def stop_recording_request(self, channel):
+        """
+        Stops recording on a specified channel.
+
+        Args:
+            channel (str): The channel to stop recording on.
+
+        Returns:
+            dict: The response from the Asterisk server.
+        """
         if self.ami:
             logging.info(f"Stopping recording of {channel}")
             action = SimpleAction(
@@ -125,6 +212,12 @@ class AsteriskInterop:
             raise ValueError("AMI Client Error")
 
     def text_to_speech(self, text):
+        """
+        Converts text to speech and saves it as an audio file.
+
+        Args:
+            text (str): The text to convert to speech.
+        """
         tts = gTTS(text=text, lang='en')
         tts.save("output.mp3")
         sound = AudioSegment.silent(duration=4000) + AudioSegment.from_mp3("output.mp3")
@@ -133,18 +226,40 @@ class AsteriskInterop:
         sound.export("output.gsm", format="gsm", bitrate="13k")
         shutil.copy("output.gsm", "/usr/share/asterisk/sounds/en")
 
-    def speech_to_text(self, file_name = "r_input.wav", prompt = ""):
+    def speech_to_text(self, file_name="r_input.wav", prompt=""):
+        """
+        Converts speech to text using the Whisper model.
+
+        Args:
+            file_name (str): The name of the audio file to transcribe.
+            prompt (str): The initial prompt for the transcription.
+
+        Returns:
+            str: The transcribed text.
+        """
         response = self.model.transcribe(f"/var/spool/asterisk/monitor/{file_name}", temperature=0.0, language="En", initial_prompt=prompt)
         print(response)
         return response["text"]
 
     def wait_for_conference(self):
+        """
+        Waits for a conference to start.
+
+        Returns:
+            bool: True when a conference is found.
+        """
         while self.conference_name == None:
             time.sleep(0.25)
         logging.info("Conference found")
         return True
 
     def wait_for_start(self):
+        """
+        Waits for the start of the conference.
+
+        Returns:
+            str: The channel of the talker.
+        """
         while self.start is False:
             time.sleep(0.05)
         logging.info("Start monitor")
@@ -155,6 +270,12 @@ class AsteriskInterop:
         return self.talkerChannel
 
     def wait_for_stop(self):
+        """
+        Waits for the stop of the conference.
+
+        Returns:
+            str: The transcribed text of the conference.
+        """
         while self.stop is False:
             time.sleep(0.05)
         logging.info("Stop monitor")
@@ -170,10 +291,24 @@ class AsteriskInterop:
             return e
 
     def save_string_to_file(self, string, file_path):
+        """
+        Saves a string to a file.
+
+        Args:
+            string (str): The string to save.
+            file_path (str): The path to the file.
+        """
         with open(file_path, 'w') as file:
             file.write(string)
 
     def on_event(self, source, event):
+        """
+        Handles Asterisk events.
+
+        Args:
+            source: The source of the event.
+            event: The event data.
+        """
         if event.name == 'ConfbridgeStart' or event.name == 'ConfbridgeJoin' and self.conference_name == None:
             # React to conference start event
             logging.info("Conference name:", event.keys['Conference'])

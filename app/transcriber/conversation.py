@@ -1,8 +1,18 @@
 """
-transcriber.py
+This module handles the processing and transcription of audio data for conversations. It includes the ConversationTranscriptionManager class,
+which manages audio blobs, transcribes them, and processes the merged audio using the Whisper model.
 
-This module handles the processing and transcription of audio data. It includes the AudioTranscriptionManager class, 
-which manages audio blobs, merges them, and transcribes the merged audio using the Whisper model.
+Classes:
+    ConversationTranscriptionManager: Manages the transcription of audio data for a session.
+
+Functions:
+
+* __init__: Initializes the ConversationTranscriptionManager.
+* process: Processes the transcription and schedules events.
+* get_timestamp_of_keyword: Finds the next timestamp of the keyword in the transcription file.
+* handle_upload_and_synthesis: Uploads the transcription file and handles audio synthesis.
+* generate_output_file: Generates the output file path for the transcription.
+* fold: Reads, processes, and formats the CSV files containing transcription data.
 """
 
 import whisper
@@ -21,29 +31,38 @@ from ..utils import upload_to_mission_planner
 import asyncio
 
 class ConversationTranscriptionManager:
-    """Manages the transcribed audio data.
+    """
+    Manages the transcribed audio data.
 
     This class handles audio blobs, stores them in a queue, and uses the Whisper model for transcription. 
     It also manages a temporary folder for storing audio files and keeps track of the session ID.
 
     Attributes:
-        in_transcription (str): The current transcription text for input side of the conversation.
-        out_transcription (str): The current transcription text for output side of the conversation.
-        transcription_folder_name (str): The name/path of the temporary transcriptions folder.
+        in_file (str): Path to the input audio file.
+        out_file (str): Path to the output audio file.
+        transcription_folder_name (str): Name/path of the temporary transcriptions folder.
+        transcription_file (str): Path to the transcription file.
+        unique_identifier (str): Unique identifier for the session.
+        speech_processing (SpeechProcessor): Optional speech processing component.
+        last_timestamp (float): Last timestamp processed in the transcription.
     """
 
-    def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str, unique_identifier:str, speech_processing : Optional[SpeechProcessor]):
-        """Initializes the ConversationTranscriptionManager with an optional temporary folder and session ID.
+    def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str, unique_identifier: str, speech_processing: Optional[SpeechProcessor]) -> None:
+        """
+        Initializes the ConversationTranscriptionManager with an optional temporary folder and session ID.
 
         If no temporary folder is provided, a new one is created. The temporary folder is used for storing audio files.
         The session ID, if provided, is used to identify the session associated with this manager.
 
         Args:
-            temp_folder (Optional[tempfile.TemporaryDirectory]): The temporary folder for storing audio files.
+            in_file_path (str): The path to the input audio file.
+            out_file_path (str): The path to the output audio file.
+            transcription_folder_name (str): The name of the temporary folder for transcriptions.
+            unique_identifier (str): A unique identifier for the session.
+            speech_processing (Optional[SpeechProcessor]): Optional speech processing component.
         """
-
-        self.in_file = in_file_path # inbound file, Check if path exists
-        self.out_file = out_file_path # outbound file, Check if path exists
+        self.in_file = in_file_path  # inbound file, Check if path exists
+        self.out_file = out_file_path  # outbound file, Check if path exists
 
         self.transcription_folder_name = transcription_folder_name
         self.transcription_file = self.generate_output_file()
@@ -53,16 +72,26 @@ class ConversationTranscriptionManager:
         self.last_timestamp = None
 
     def process(self):
+        """Processes the transcription and schedules events."""
         self.fold()
 
-        timestamp = self.get_timestamp_of_keyword("chronos", after= self.last_timestamp)
+        timestamp = self.get_timestamp_of_keyword("chronos", after=self.last_timestamp)
         if timestamp and self.speech_processing:
             # Schedule the upload to happen 60 seconds after detection, passing the timestamp
             self.speech_processing.schedule_event(60, self.handle_upload_and_synthesis)
 
-    def get_timestamp_of_keyword(self, keyword, after = None):
-        """Find the next timestamp of the keyword in the transcription file."""
-        df_in = pd.read_csv(self.in_file, delimiter=";",  names=['time_start', 'time_end', 'text'])
+    def get_timestamp_of_keyword(self, keyword: str, after: Optional[float] = None) -> Optional[float]:
+        """
+        Finds the next timestamp of the keyword in the transcription file.
+
+        Args:
+            keyword (str): The keyword to search for in the transcription.
+            after (Optional[float]): Only consider timestamps after this time.
+
+        Returns:
+            Optional[float]: The timestamp of the keyword, or None if not found.
+        """
+        df_in = pd.read_csv(self.in_file, delimiter=";", names=['time_start', 'time_end', 'text'])
         df_out = pd.read_csv(self.out_file, delimiter=";", names=['time_start', 'time_end', 'text'])
         df = pd.concat([df_in, df_out])
         if after is not None:
@@ -75,7 +104,12 @@ class ConversationTranscriptionManager:
         return None
 
     def handle_upload_and_synthesis(self):
-        """Upload the transcription file and handle audio synthesis."""
+        """
+        Uploads the transcription file and handles audio synthesis.
+
+        Returns:
+            Optional[str]: The response from the mission planner, or None if there was an error.
+        """
         try:
             response = upload_to_mission_planner("10.11.0.8", 5200, self.transcription_file)
             if response:
@@ -91,12 +125,24 @@ class ConversationTranscriptionManager:
             logging.error(f"Error during upload or synthesis: {e}")
 
     def generate_output_file(self) -> str:
+        """
+        Generates the output file path for the transcription.
+
+        Returns:
+            str: The file path to the transcription output file.
+        """
         file_path = os.path.join(self.transcription_folder_name, "transcription.txt")
         return file_path
 
-    def fold(self):
+    def fold(self) -> str:
+        """
+        Reads, processes, and formats the CSV files containing transcription data.
+
+        Returns:
+            str: The formatted transcription output as a string.
+        """
         # Read the CSV files
-        df_in = pd.read_csv(self.in_file, delimiter=";",  names=['time_start', 'time_end', 'text'])
+        df_in = pd.read_csv(self.in_file, delimiter=";", names=['time_start', 'time_end', 'text'])
         df_out = pd.read_csv(self.out_file, delimiter=";", names=['time_start', 'time_end', 'text'])
 
         # Add a label to distinguish the speaker
@@ -120,4 +166,3 @@ class ConversationTranscriptionManager:
                 output += (line + '\n')
 
         return output
-

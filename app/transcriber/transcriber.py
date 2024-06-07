@@ -1,6 +1,4 @@
 """
-transcriber.py
-
 This module handles the processing and transcription of audio data. It includes the AudioTranscriptionManager class, 
 which manages audio blobs, merges them, and transcribes the merged audio using the Whisper model.
 """
@@ -19,7 +17,8 @@ import wave
 audio_model = AudioModel().get_model()
 
 class DualAudioTranscriptionManager:
-    """Manages the transcription of audio data for a session.
+    """
+    Manages the transcription of audio data for a session.
 
     This class handles audio blobs, stores them in a queue, and uses the Whisper model for transcription. 
     It also manages a temporary folder for storing audio files and keeps track of the session ID.
@@ -34,17 +33,21 @@ class DualAudioTranscriptionManager:
     """
 
     def __init__(self, in_file_path: str, out_file_path: str, transcription_folder_name: str, unique_identifier: str):
-        """Initializes the DualAudioTranscriptionManager with an optional temporary folder and session ID.
+        """
+        Initializes the DualAudioTranscriptionManager with an optional temporary folder and session ID.
 
         If no temporary folder is provided, a new one is created. The temporary folder is used for storing audio files.
         The session ID, if provided, is used to identify the session associated with this manager.
 
         Args:
-            temp_folder (Optional[tempfile.TemporaryDirectory]): The temporary folder for storing audio files.
+            in_file_path (str): The path to the input audio file.
+            out_file_path (str): The path to the output audio file.
+            transcription_folder_name (str): The name of the temporary folder for transcriptions.
+            unique_identifier (str): A unique identifier for the session.
         """
 
-        self.in_file = in_file_path # Check if path exists
-        self.out_file = out_file_path # Check if path exists
+        self.in_file = in_file_path  # Check if path exists
+        self.out_file = out_file_path  # Check if path exists
 
         self.transcription_folder_name = transcription_folder_name
 
@@ -64,10 +67,15 @@ class DualAudioTranscriptionManager:
         self.unique_identifier = unique_identifier
 
     def process(self):
+        """Processes the transcription of input and output audio files."""
         in_path, out_path = self.transcribe()
 
     def transcribe(self):
-        """Transcribes the given audio file using the Whisper model.
+        """
+        Transcribes the given audio file using the Whisper model.
+
+        Returns:
+            tuple: Paths to the transcribed inbound and outbound audio files.
 
         Raises:
             Exception: Propagates any exceptions that occur during transcription.
@@ -76,7 +84,7 @@ class DualAudioTranscriptionManager:
         in_path = None
         out_path = None
 
-        logging.info(f"Copying file to folder and removing times")
+        logging.info("Copying file to folder and removing times")
         cut_beginning(self.in_file, self.temp_in_file, self.in_timer)
         cut_beginning(self.out_file, self.temp_out_file, self.out_timer)
 
@@ -127,3 +135,4 @@ class DualAudioTranscriptionManager:
 
 
 DEFAULT_TIMEOUT = 8 # in seconds
+
