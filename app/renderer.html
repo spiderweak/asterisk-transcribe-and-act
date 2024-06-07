@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Renderer package &#8212; TRACT v0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=8dfa3f53" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script src="../_static/documentation_options.js?v=34cd777e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Transcriber package" href="transcriber.html" />
+    <link rel="prev" title="Utility package" href="utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="transcriber.html" title="Transcriber package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="Utility package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">TRACT v0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../modules.html" >TRACT modules</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../app.html" accesskey="U">App package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Renderer package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="renderer-package">
+<h1>Renderer package<a class="headerlink" href="#renderer-package" title="Link to this heading">¶</a></h1>
+<section id="module-app.renderer">
+<span id="package-contents"></span><h2>Package contents<a class="headerlink" href="#module-app.renderer" title="Link to this heading">¶</a></h2>
+<p>This package contains modules related to rendering and processing speech and text-to-speech (TTS) operations.</p>
+<p>Modules:</p>
+<ul class="simple">
+<li><p>renderer: Provides rendering functionalities.</p></li>
+<li><p>speech: Handles speech processing tasks.</p></li>
+<li><p>tts: Manages text-to-speech conversions.</p></li>
+</ul>
+</section>
+<section id="module-app.renderer.renderer">
+<span id="renderer-module"></span><h2>Renderer module<a class="headerlink" href="#module-app.renderer.renderer" title="Link to this heading">¶</a></h2>
+<p>This module provides functionalities for managing and rendering conversations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.renderer.renderer.ConversationRenderingManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.renderer.renderer.</span></span><span class="sig-name descname"><span class="pre">ConversationRenderingManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outbound_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inbound_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.renderer.ConversationRenderingManager" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages the rendering of conversations, handling outbound and inbound messages.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.renderer.renderer.ConversationRenderingManager.append_message">
+<span class="sig-name descname"><span class="pre">append_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.renderer.ConversationRenderingManager.append_message" title="Link to this definition">¶</a></dt>
+<dd><p>Appends a message to the conversation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.renderer.renderer.ConversationRenderingManager.render_conversation">
+<span class="sig-name descname"><span class="pre">render_conversation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.renderer.ConversationRenderingManager.render_conversation" title="Link to this definition">¶</a></dt>
+<dd><p>Renders the conversation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.renderer.speech">
+<span id="speech-module"></span><h2>Speech module<a class="headerlink" href="#module-app.renderer.speech" title="Link to this heading">¶</a></h2>
+<p>This module handles speech processing tasks, including scheduling and processing events.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.renderer.speech.SpeechProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.renderer.speech.</span></span><span class="sig-name descname"><span class="pre">SpeechProcessor</span></span><a class="headerlink" href="#app.renderer.speech.SpeechProcessor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Processes speech events using a queue for scheduling.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.renderer.speech.SpeechProcessor.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.speech.SpeechProcessor.run" title="Link to this definition">¶</a></dt>
+<dd><p>Runs the speech processor, processing events from the queue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.renderer.speech.SpeechProcessor.schedule_event">
+<span class="sig-name descname"><span class="pre">schedule_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.speech.SpeechProcessor.schedule_event" title="Link to this definition">¶</a></dt>
+<dd><p>Schedules an event to be processed after a specified delay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delay</strong> (<em>int</em>) – The delay before processing the event.</p></li>
+<li><p><strong>action</strong> (<em>callable</em>) – The action to perform for the event.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.renderer.tts">
+<span id="tts-module"></span><h2>TTS module<a class="headerlink" href="#module-app.renderer.tts" title="Link to this heading">¶</a></h2>
+<p>This module manages text-to-speech (TTS) conversions using the pyttsx3 library.</p>
+<p>Functions:</p>
+<ul class="simple">
+<li><p>convert_text_to_speech: Converts text to speech and saves it as an audio file.</p></li>
+<li><p>audio_synthesis: Synthesizes audio from text and sends it to Asterisk.</p></li>
+<li><p>send_to_asterisk: Sends the audio file to Asterisk for playback.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.renderer.tts.TextToSpeechConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.renderer.tts.</span></span><span class="sig-name descname"><span class="pre">TextToSpeechConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tts_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.tts.TextToSpeechConverter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Converts text to speech using the pyttsx3 library.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="app.renderer.tts.TextToSpeechConverter.convert_text_to_speech">
+<span class="sig-name descname"><span class="pre">convert_text_to_speech</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.tts.TextToSpeechConverter.convert_text_to_speech" title="Link to this definition">¶</a></dt>
+<dd><p>Converts text to speech, saves as an audio file, and returns the content encoded in base64.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – The text to convert to speech.</p></li>
+<li><p><strong>folder</strong> (<em>str</em>) – The folder where the temporary audio file will be saved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The base64 encoded content of the generated audio file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TextToSpeechTimeoutError</strong> – If the audio file creation exceeds the timeout.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.renderer.tts.audio_synthesis">
+<span class="sig-prename descclassname"><span class="pre">app.renderer.tts.</span></span><span class="sig-name descname"><span class="pre">audio_synthesis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversation_unique_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.tts.audio_synthesis" title="Link to this definition">¶</a></dt>
+<dd><p>Synthesizes audio from text and sends it to Asterisk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sentence</strong> (<em>str</em>) – The text to synthesize.</p></li>
+<li><p><strong>temp_folder_name</strong> (<em>str</em>) – The folder for temporary files.</p></li>
+<li><p><strong>conversation_unique_id</strong> (<em>str</em>) – The unique identifier for the conversation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.renderer.tts.send_to_asterisk">
+<span class="sig-prename descclassname"><span class="pre">app.renderer.tts.</span></span><span class="sig-name descname"><span class="pre">send_to_asterisk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversation_unique_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.renderer.tts.send_to_asterisk" title="Link to this definition">¶</a></dt>
+<dd><p>Sends the audio file to Asterisk for playback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The path to the audio file.</p></li>
+<li><p><strong>conversation_unique_id</strong> (<em>str</em>) – The unique identifier for the conversation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the audio file is too short.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Renderer package</a><ul>
+<li><a class="reference internal" href="#module-app.renderer">Package contents</a></li>
+<li><a class="reference internal" href="#module-app.renderer.renderer">Renderer module</a><ul>
+<li><a class="reference internal" href="#app.renderer.renderer.ConversationRenderingManager"><code class="docutils literal notranslate"><span class="pre">ConversationRenderingManager</span></code></a><ul>
+<li><a class="reference internal" href="#app.renderer.renderer.ConversationRenderingManager.append_message"><code class="docutils literal notranslate"><span class="pre">ConversationRenderingManager.append_message()</span></code></a></li>
+<li><a class="reference internal" href="#app.renderer.renderer.ConversationRenderingManager.render_conversation"><code class="docutils literal notranslate"><span class="pre">ConversationRenderingManager.render_conversation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.renderer.speech">Speech module</a><ul>
+<li><a class="reference internal" href="#app.renderer.speech.SpeechProcessor"><code class="docutils literal notranslate"><span class="pre">SpeechProcessor</span></code></a><ul>
+<li><a class="reference internal" href="#app.renderer.speech.SpeechProcessor.run"><code class="docutils literal notranslate"><span class="pre">SpeechProcessor.run()</span></code></a></li>
+<li><a class="reference internal" href="#app.renderer.speech.SpeechProcessor.schedule_event"><code class="docutils literal notranslate"><span class="pre">SpeechProcessor.schedule_event()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.renderer.tts">TTS module</a><ul>
+<li><a class="reference internal" href="#app.renderer.tts.TextToSpeechConverter"><code class="docutils literal notranslate"><span class="pre">TextToSpeechConverter</span></code></a><ul>
+<li><a class="reference internal" href="#app.renderer.tts.TextToSpeechConverter.convert_text_to_speech"><code class="docutils literal notranslate"><span class="pre">TextToSpeechConverter.convert_text_to_speech()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#app.renderer.tts.audio_synthesis"><code class="docutils literal notranslate"><span class="pre">audio_synthesis()</span></code></a></li>
+<li><a class="reference internal" href="#app.renderer.tts.send_to_asterisk"><code class="docutils literal notranslate"><span class="pre">send_to_asterisk()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="utils.html"
+                          title="previous chapter">Utility package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="transcriber.html"
+                          title="next chapter">Transcriber package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/app/renderer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="transcriber.html" title="Transcriber package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="Utility package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">TRACT v0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../modules.html" >TRACT modules</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../app.html" >App package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Renderer package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Antoine BERNARD, David Communier.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    </div>
+  </body>
+</html>

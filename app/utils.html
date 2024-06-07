@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Utility package &#8212; TRACT v0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=8dfa3f53" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script src="../_static/documentation_options.js?v=34cd777e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Renderer package" href="renderer.html" />
+    <link rel="prev" title="Tests package" href="tests.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="renderer.html" title="Renderer package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tests.html" title="Tests package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">TRACT v0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../modules.html" >TRACT modules</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../app.html" accesskey="U">App package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Utility package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="utility-package">
+<h1>Utility package<a class="headerlink" href="#utility-package" title="Link to this heading">¶</a></h1>
+<p>The app.utility package includes functions implements function not directly related to transcription but side function that are essential in our implementation, you are free to re-implement them yourself.</p>
+<section id="module-app.utils">
+<span id="package-contents"></span><h2>Package contents<a class="headerlink" href="#module-app.utils" title="Link to this heading">¶</a></h2>
+<p>This module initializes the utility functions and classes used in the asterisk-transcribe-and-act project.</p>
+<p>It imports custom exceptions, audio utilities, configuration handling, and file utilities to be used across the project.</p>
+<p>Modules Imported:</p>
+<ul class="simple">
+<li><p>audio_utils: Provides utilities for audio processing.</p></li>
+<li><p>config: Manages configuration settings.</p></li>
+<li><p>custom_exceptions: Contains custom exception classes.</p></li>
+<li><p>file_utils: Offers utilities for file operations.</p></li>
+</ul>
+</section>
+<section id="module-app.utils.audio_utils">
+<span id="audio-utils-module"></span><h2>Audio_utils module<a class="headerlink" href="#module-app.utils.audio_utils" title="Link to this heading">¶</a></h2>
+<p>This module provides utility functions and classes for audio processing, including:</p>
+<ul class="simple">
+<li><p>Singleton pattern implementation for the AudioModel class.</p></li>
+<li><p>Checking if <cite>ffmpeg</cite> is installed.</p></li>
+<li><p>Getting the duration of a WAV file.</p></li>
+<li><p>Cutting the beginning of a WAV file.</p></li>
+</ul>
+<p>Classes:</p>
+<ul class="simple">
+<li><p>AudioModel: A singleton class that loads and provides access to the Whisper audio model.</p></li>
+</ul>
+<p>Functions:</p>
+<ul class="simple">
+<li><p>singleton: A decorator that ensures a class follows the singleton pattern.</p></li>
+<li><p>check_ffmpeg_installed: Checks if <cite>ffmpeg</cite> is installed on the system.</p></li>
+<li><p>get_wav_duration: Gets the duration of a WAV file.</p></li>
+<li><p>cut_beginning: Cuts the beginning of a WAV file.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.audio_utils.AudioModel">
+<span class="sig-prename descclassname"><span class="pre">app.utils.audio_utils.</span></span><span class="sig-name descname"><span class="pre">AudioModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.utils.audio_utils.AudioModel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.audio_utils.check_ffmpeg_installed">
+<span class="sig-prename descclassname"><span class="pre">app.utils.audio_utils.</span></span><span class="sig-name descname"><span class="pre">check_ffmpeg_installed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.utils.audio_utils.check_ffmpeg_installed" title="Link to this definition">¶</a></dt>
+<dd><p>Check if ffmpeg is installed on the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if ffmpeg is installed, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subprocess.CalledProcessError</strong> – If the ffmpeg command fails.</p></li>
+<li><p><strong>FileNotFoundError</strong> – If ffmpeg is not found on the system.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.audio_utils.cut_beginning">
+<span class="sig-prename descclassname"><span class="pre">app.utils.audio_utils.</span></span><span class="sig-name descname"><span class="pre">cut_beginning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.utils.audio_utils.cut_beginning" title="Link to this definition">¶</a></dt>
+<dd><p>Cut the beginning of a WAV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_filename</strong> (<em>str</em>) – Path to the input WAV file.</p></li>
+<li><p><strong>output_filename</strong> (<em>str</em>) – Path to the output WAV file.</p></li>
+<li><p><strong>cut_seconds</strong> (<em>int</em>) – Number of seconds to cut from the beginning.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If an error occurs during file operations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.audio_utils.get_wav_duration">
+<span class="sig-prename descclassname"><span class="pre">app.utils.audio_utils.</span></span><span class="sig-name descname"><span class="pre">get_wav_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.utils.audio_utils.get_wav_duration" title="Link to this definition">¶</a></dt>
+<dd><p>Get the duration of a WAV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to the WAV file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Duration of the WAV file in seconds.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>wave.Error</strong> – If there is an error reading the WAV file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.audio_utils.singleton">
+<span class="sig-prename descclassname"><span class="pre">app.utils.audio_utils.</span></span><span class="sig-name descname"><span class="pre">singleton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.utils.audio_utils.singleton" title="Link to this definition">¶</a></dt>
+<dd><p>A decorator that ensures a class follows the singleton pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> – The class to be instantiated as a singleton.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The singleton instance of the class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="config-module">
+<h2>Config module<a class="headerlink" href="#config-module" title="Link to this heading">¶</a></h2>
+<p>This module provides the Config class for loading and managing the application’s configuration settings from a YAML file or default values. It also sets up logging based on the loaded configuration.</p>
+<p>Classes:</p>
+<ul class="simple">
+<li><p>Config: Handles loading, parsing, and applying configuration settings from a YAML file.</p></li>
+</ul>
+<p>Functions:</p>
+<ul class="simple">
+<li><p>set_defaults: Sets default values for all attributes.</p></li>
+<li><p>load_yaml: Loads settings from a YAML file.</p></li>
+<li><p>setup_logging: Initializes logging based on parsed YAML.</p></li>
+<li><p>_set_attribute_from_yaml: Helper function to set attribute from parsed YAML.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.utils.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Config class to handle application configuration settings.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">DEFAULT_LOG_LEVEL</span></span></dt>
+<dd><p>Default log level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">DEFAULT_LOG_FILENAME</span></span></dt>
+<dd><p>Default log filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">parsed_yaml</span></span></dt>
+<dd><p>Parsed YAML configuration data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">log_level</span></span></dt>
+<dd><p>Log level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">log_filename</span></span></dt>
+<dd><p>Log filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">DEFAULT_LOG_FILENAME</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'log.txt'</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">DEFAULT_LOG_LEVEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">_set_attribute_from_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>Helper function to set attribute from parsed YAML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attr_name</strong> (<em>str</em>) – The name of the attribute to set.</p></li>
+<li><p><strong>yaml_path</strong> (<em>list</em>) – The list of keys to navigate the YAML dictionary.</p></li>
+<li><p><strong>value_type</strong> (<em>type</em>) – The type to cast the value to (e.g., int, float, str).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">load_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>Loads settings from a YAML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_file_path</strong> (<em>str</em>) – Path to the configuration file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">set_defaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>Sets default values for all attributes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">setup_logging</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>Initializes logging based on parsed YAML configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.utils.custom_exceptions">
+<span id="custom-exceptions-module"></span><h2>Custom_exceptions module<a class="headerlink" href="#module-app.utils.custom_exceptions" title="Link to this heading">¶</a></h2>
+<p>This module defines custom exceptions for the asterisk-transcribe-and-act project.</p>
+<p>Classes:</p>
+<ul class="simple">
+<li><p>MissingPackageError: Exception raised when a required package is missing.</p></li>
+</ul>
+<dl class="py exception">
+<dt class="sig sig-object py" id="app.utils.custom_exceptions.MissingPackageError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.utils.custom_exceptions.</span></span><span class="sig-name descname"><span class="pre">MissingPackageError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Required</span> <span class="pre">package</span> <span class="pre">is</span> <span class="pre">missing.'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.utils.custom_exceptions.MissingPackageError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception raised when a required package is missing.</p>
+<p>Currently, this exception is only checked for ffmpeg.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.utils.custom_exceptions.MissingPackageError.message">
+<span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#app.utils.custom_exceptions.MissingPackageError.message" title="Link to this definition">¶</a></dt>
+<dd><p>Explanation of the error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-app.utils.file_utils">
+<span id="file-utils-module"></span><h2>File_utils module<a class="headerlink" href="#module-app.utils.file_utils" title="Link to this heading">¶</a></h2>
+<p>This module provides utility functions for file operations in the asterisk-transcribe-and-act project.</p>
+<p>Functions:</p>
+<ul class="simple">
+<li><p>generate_folder: Generates a folder based on a unique identifier.</p></li>
+<li><p>get_pair_path: Returns the expected path of the paired file.</p></li>
+<li><p>write_to_file: Writes data to a specified file in a given folder.</p></li>
+<li><p>purge_file: Attempts to delete the specified file.</p></li>
+<li><p>upload_to_mission_planner: Uploads a file to the mission planner.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.file_utils.generate_folder">
+<span class="sig-prename descclassname"><span class="pre">app.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">generate_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unique_identifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#app.utils.file_utils.generate_folder" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a folder based on the given unique identifier.</p>
+<p>Folder name is extracted from the asterisk monitor file name.
+The folder will be temporary and created with a specific name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unique_identifier</strong> (<em>str</em>) – The unique identifier for the folder.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path of the generated folder.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.file_utils.get_pair_path">
+<span class="sig-prename descclassname"><span class="pre">app.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">get_pair_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#app.utils.file_utils.get_pair_path" title="Link to this definition">¶</a></dt>
+<dd><p>Given one file of a pair, returns the expected path of its pair.</p>
+<p>Assumes file naming convention of ‘…-in.wav’ and ‘…-out.wav’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path of the file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path of the paired file, or None if no pair is found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.file_utils.purge_file">
+<span class="sig-prename descclassname"><span class="pre">app.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">purge_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.utils.file_utils.purge_file" title="Link to this definition">¶</a></dt>
+<dd><p>Attempts to delete the specified file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – The path of the file to be deleted.</p>
+</dd>
+</dl>
+<p>Logs a warning if the file deletion fails.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.file_utils.upload_to_mission_planner">
+<span class="sig-prename descclassname"><span class="pre">app.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">upload_to_mission_planner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#app.utils.file_utils.upload_to_mission_planner" title="Link to this definition">¶</a></dt>
+<dd><p>Uploads a file to the mission planner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – The URL of the mission planner.</p></li>
+<li><p><strong>port</strong> (<em>int</em>) – The port of the mission planner.</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) – The path of the file to upload.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status code and response content from the upload request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.utils.file_utils.write_to_file">
+<span class="sig-prename descclassname"><span class="pre">app.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">write_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#app.utils.file_utils.write_to_file" title="Link to this definition">¶</a></dt>
+<dd><p>Writes data to a specified file in a given folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_name</strong> (<em>str</em>) – The name of the folder.</p></li>
+<li><p><strong>file_name</strong> (<em>str</em>) – The name of the file.</p></li>
+<li><p><strong>data</strong> (<em>list</em>) – The data to write to the file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path of the written file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Utility package</a><ul>
+<li><a class="reference internal" href="#module-app.utils">Package contents</a></li>
+<li><a class="reference internal" href="#module-app.utils.audio_utils">Audio_utils module</a><ul>
+<li><a class="reference internal" href="#app.utils.audio_utils.AudioModel"><code class="docutils literal notranslate"><span class="pre">AudioModel()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.audio_utils.check_ffmpeg_installed"><code class="docutils literal notranslate"><span class="pre">check_ffmpeg_installed()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.audio_utils.cut_beginning"><code class="docutils literal notranslate"><span class="pre">cut_beginning()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.audio_utils.get_wav_duration"><code class="docutils literal notranslate"><span class="pre">get_wav_duration()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.audio_utils.singleton"><code class="docutils literal notranslate"><span class="pre">singleton()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#config-module">Config module</a></li>
+<li><a class="reference internal" href="#module-app.utils.custom_exceptions">Custom_exceptions module</a><ul>
+<li><a class="reference internal" href="#app.utils.custom_exceptions.MissingPackageError"><code class="docutils literal notranslate"><span class="pre">MissingPackageError</span></code></a><ul>
+<li><a class="reference internal" href="#app.utils.custom_exceptions.MissingPackageError.message"><code class="docutils literal notranslate"><span class="pre">MissingPackageError.message</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-app.utils.file_utils">File_utils module</a><ul>
+<li><a class="reference internal" href="#app.utils.file_utils.generate_folder"><code class="docutils literal notranslate"><span class="pre">generate_folder()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.file_utils.get_pair_path"><code class="docutils literal notranslate"><span class="pre">get_pair_path()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.file_utils.purge_file"><code class="docutils literal notranslate"><span class="pre">purge_file()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.file_utils.upload_to_mission_planner"><code class="docutils literal notranslate"><span class="pre">upload_to_mission_planner()</span></code></a></li>
+<li><a class="reference internal" href="#app.utils.file_utils.write_to_file"><code class="docutils literal notranslate"><span class="pre">write_to_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="tests.html"
+                          title="previous chapter">Tests package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="renderer.html"
+                          title="next chapter">Renderer package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/app/utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="renderer.html" title="Renderer package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tests.html" title="Tests package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">TRACT v0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../modules.html" >TRACT modules</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../app.html" >App package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Utility package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Antoine BERNARD, David Communier.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    </div>
+  </body>
+</html>
